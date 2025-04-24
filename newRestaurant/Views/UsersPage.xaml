@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:newRestaurant.ViewModels"
+             xmlns:model="clr-namespace:newRestaurant.Models"
+             x:Class="newRestaurant.Views.UsersPage"
+             x:DataType="vm:UsersViewModel"
+             Title="{Binding Title}">
+
+    <Grid RowDefinitions="*, Auto">
+
+        <CollectionView ItemsSource="{Binding Users}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding GoToUserDetailCommand}"
+                        Grid.Row="0"
+                        Margin="5">
+            <CollectionView.Header>
+                <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Center" Margin="10"/>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:User">
+                    <Frame Padding="10" Margin="5" CornerRadius="5" BorderColor="LightGray">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Binding Username}" FontSize="Medium" FontAttributes="Bold" VerticalOptions="Center"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Email}" FontSize="Small" TextColor="Gray" VerticalOptions="Center"/>
+                            <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Text="{Binding Role}" FontSize="Small" TextColor="DarkGoldenrod" VerticalOptions="Center" HorizontalOptions="End"/>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label Text="No users found." HorizontalOptions="Center" VerticalOptions="Center"/>
+            </CollectionView.EmptyView>
+        </CollectionView>
+
+        <!-- Optional: Add button - directs to registration or admin add page -->
+        <Button Text="Add New User (Register)"
+                Command="{Binding AddUserCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                Margin="20"
+                Grid.Row="1"/>
+
+    </Grid>
+</ContentPage>

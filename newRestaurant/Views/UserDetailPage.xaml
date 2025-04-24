@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:newRestaurant.ViewModels"
+             xmlns:model="clr-namespace:newRestaurant.Models"
+             x:Class="newRestaurant.Views.UserDetailPage"
+             x:DataType="vm:UserDetailViewModel"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="10" Padding="20">
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Fill"/>
+
+            <!-- Message indicating why editing might be disabled -->
+            <Label Text="Cannot edit the currently logged-in user."
+                   TextColor="OrangeRed"
+                   IsVisible="{Binding IsCurrentUser}"
+                   HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+            <Label Text="Username:"/>
+            <!-- Bind IsEnabled to the derived IsEditable property -->
+            <Entry Text="{Binding EditUsername}" Placeholder="Enter username" MaxLength="100" IsEnabled="{Binding IsEditable}"/>
+
+            <Label Text="Email:"/>
+            <Entry Text="{Binding EditEmail}" Placeholder="Enter email address" MaxLength="150" Keyboard="Email" IsEnabled="{Binding IsEditable}"/>
+
+            <Label Text="Role:"/>
+            <Picker ItemsSource="{Binding AllRoles}"
+                    SelectedItem="{Binding SelectedRole}"
+                    IsEnabled="{Binding IsEditable}"
+                    Title="Select Role"/>
+
+            <Button Text="Save Changes"
+                    Command="{Binding SaveUserCommand}"
+                    IsEnabled="{Binding IsEditable}" 
+                IsVisible="{Binding CanEdit}"
+                Margin="0,20,0,0"/>
+
+                <Button Text="Cancel / Back"
+                    Command="{Binding GoBackCommand}"
+                    IsEnabled="{Binding IsNotBusy}"
+                    Margin="0,10,0,0"/>
+
+                <!-- Delete button would go here if implemented -->
+                <!-- <Button Text="Delete User" Command="{...}" IsEnabled="{Binding IsEditable}" IsVisible="{Binding CanEdit}" BackgroundColor="Red"... /> -->
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
